@@ -72,3 +72,11 @@ Proxyfreigabe sind als Nächstes nötig. Details HTTPS-PORTALTEST-VORSCHAU.md.
 Vorschaukorrektur nach Pi-Abbruch: sichere Schritt-/Fehlerdiagnose und explizit
 nicht wiederherstellbarer nginx-T-Snapshot bei root-only Site. Kein sudo-Python,
 keine Rechteänderung. 161 Tests bestanden; tatsächliche Pi-Ursache noch offen.
+
+## Kontrolliertes Update der bestehenden Testkopie
+
+update_test_mount.py übernimmt den geprüften Mount in die vorhandene Kopie auf
+5071, ohne Neuinstallation oder neue DB. Private Datei-/SQLite-Sicherung, 27 echte
+integrierte Checks, automatischer Rückweg und offlinefähige Rücknahme vorbereitet.
+171 Tests sowie tatsächlicher Cloud-Update-/Fehler-/Rücknahmeablauf bestanden.
+Siehe TESTMOUNT-UPDATE.md. Pi-Ausführung noch offen; Nginx bleibt unverändert.
