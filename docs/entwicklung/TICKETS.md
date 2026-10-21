@@ -39,3 +39,14 @@ Mergeabhängigkeiten #1/#2 sind geprüft und ihre Beschreibungen vorbereitet; be
 ## Aktualisierung nach Begleiter-Vorbereitung
 
 Ein-/Ausblenden, Stop beim Schließen, Fokus/Escape und das bestehende Gespräch sind in der isolierten Demo geprüft. 76 pytest-Tests und Chromium-Smoke mit zwei Viewports sowie synthetischer Hostnavigation/Formularen mit/ohne JavaScript bestanden. Das schließt P1-05 nicht ab: tatsächliche Portalmenüs und gemeinsame Authentifizierung bleiben ohne aktuelle Portalquellen unprüfbar. Siehe P1-05-BEGLEITER-VORBEREITUNG.md. P1-03/04 bleiben gesperrt statt einer neuen Mitglieder-/Kalenderverwaltung.
+
+## Portalexport jetzt vorhanden: erster Adapter-Schritt (21.10.2026)
+
+PR #1–#5 sind inzwischen nach main zusammengeführt. Der aktuelle Export wurde privat
+bereitgestellt und statisch untersucht (PORTALEXPORT-BESTAND.md). P0-02 ist damit
+für Code/Modelle/Auth fortgeschritten; effektive Proxy-/Dienstkonfiguration und reales
+DB-Schema/Restore bleiben offen. P1-03/04/05 haben einen deaktivierten ersten Schritt:
+`portal_adler`, zwei feste lesende Jugendwerkzeuge und additive Template-Einbindung.
+125 Tests inkl. 27 Portaltests sowie Chromium-Smoke bestanden. Das schließt weder
+volle Rollen- noch Portal-/Geräteabnahme ab; Details in P1-03-PORTAL-LESEN.md.
+Keine Produktivänderung und kein Auto-Update der bereits aktivierten Pi-Demo.
