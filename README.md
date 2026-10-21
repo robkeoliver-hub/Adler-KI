@@ -2,6 +2,8 @@
 
 Eigenständige Flask-App unter `/demo/ki-adler/`, eigener Port 5057. Kein Import der bestehenden Webseite, keine Mitgliederdatenbank, keine Migration, kein Audio-Upload. Mock funktioniert ohne Schlüssel. Echte dialogfähige KI ist über einen optionalen OpenAI-kompatiblen HTTPS-Provider anschließbar; Mock selbst ist ausdrücklich kein Sprachmodell.
 
+**Startmodi:** Standard bleibt die isolierte Demo. Einstellungen können jetzt mit validierten `ADLER_*`-Umgebungsvariablen überschrieben werden; die bisherige INI bleibt kompatibel. `ADLER_MODE=production` ist bis zur geprüften Portal-Auth-/Datenanbindung ausdrücklich gesperrt, damit dort keine Beispieldaten erscheinen. [Konfiguration und Prüfbericht](docs/entwicklung/P1-02-KONFIGURATION.md).
+
 ## Raspberry Pi 3 installieren
 
 Aktuelles Raspberry Pi OS mit Python 3.11 oder neuer verwenden (auf altem Buster zuerst separat das Betriebssystem planen). Die Schritte verändern keinen laufenden Portalserver. Als normaler Benutzer installieren, niemals in das produktive Portalverzeichnis entpacken.
@@ -86,3 +88,5 @@ Phase 0 und der erste kleine Phase-1-Schritt sind separat dokumentiert:
 - [P1-01: flüchtige Sitzungen, Tests, Setup und Rollback](docs/entwicklung/P1-01-SITZUNGEN.md)
 
 Der Entwicklungsbranch ergänzt den noch offenen PR #1; es gibt keine automatische Integration oder Änderung des laufenden Raspberry Pi. Die aktuelle Portal-Codebasis, tatsächliche DB-/Proxykonfiguration und eine passende Avatarreferenz müssen für weitere Integrationsschritte noch verifiziert werden. Die feste Demo-Anmeldung von maximal 15 Minuten bleibt erhalten und verlängert sich nicht durch Aktivität. Die Demo bleibt synthetisch; Phase 1 ist damit erst begonnen und nicht vollständig abgeschlossen.
+
+Zusammenführung: [Mergeplan für PR #1/#2 und Folge-PRs](docs/entwicklung/MERGEPLAN.md). Für die echte Integration fehlen [diese konkreten aktuellen Portaldateien](docs/entwicklung/PORTAL-INTEGRATIONSBEDARF.md). Es entsteht keine zweite Mitgliederverwaltung.
