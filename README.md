@@ -102,3 +102,5 @@ In der Demo lässt sich KI-Adler jetzt ein-/ausblenden. Ausblenden beendet Mikro
 ## Erste Einbindung in das bestehende Portal
 
 Der aktuelle Portalexport wurde privat untersucht. Der optionale, standardmäßig deaktivierte Portaladapter und seine Grenzen sind in [P1-03-PORTAL-LESEN](docs/entwicklung/P1-03-PORTAL-LESEN.md) beschrieben. Keine automatische Installation; die vorhandene Demo bleibt unverändert.
+
+Der nächste isolierte Test des bestehenden Portals ist in [Portaltest auf dem Pi](docs/entwicklung/PORTALTEST-AUF-DEM-PI.md) beschrieben. Er verwendet eine neue synthetische Datenbank auf 5071 und ändert keine bestehenden Dienste.
