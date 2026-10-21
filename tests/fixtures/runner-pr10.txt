@@ -1,0 +1,106 @@
+
+import importlib.util
+import json
+import os
+import sys
+from datetime import date, timedelta
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+if ROOT.name != 'ki-adler-portaltest' or ROOT.is_symlink():
+    raise RuntimeError('Ungültige Testwurzel')
+config = json.loads((ROOT/'private/config.json').read_text())
+portal = ROOT/'portal'
+if portal.is_symlink() or (portal/'schuetzenjugend.db').is_symlink():
+    raise RuntimeError('Unsicherer Testdatenbankpfad')
+# Do not inherit real club credentials, Flask env or external provider keys.
+os.environ.clear()
+os.environ.update(PATH=str(ROOT/'.venv/bin')+os.pathsep+'/usr/bin:/bin', LANG='C.UTF-8',
+                  SECRET_KEY=config['secret'], BETREUER_PASSWORT=config['staff_password'],
+                  COOKIE_SECURE='1')
+sys.path.insert(0,str(portal))
+spec = importlib.util.spec_from_file_location('isolated_portal',portal/'app.py')
+module = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = module
+spec.loader.exec_module(module)
+app,db = module.app,module.db
+with app.app_context():
+    if Path(db.engine.url.database).resolve() != (portal/'schuetzenjugend.db').resolve():
+        raise RuntimeError('Testdatenbank außerhalb der Kopie')
+app.config.update(ADLER_PORTAL_ENABLED=True, ADLER_PORTAL_TOKEN_REVIEWED=True,
+                  ADLER_PORTAL_ORIGIN=config['origin'])
+from portal_adler import init_portal_adler
+init_portal_adler(app,youth_model=module.Jugendlicher,training_model=module.Training,event_model=module.Termin)
+with app.app_context():
+    if not (ROOT/'private/seeded').exists():
+        if module.Jugendlicher.query.count() or module.Erwachsener.query.count() or module.Training.query.count() or module.Termin.query.count():
+            raise RuntimeError('Testdatenbank enthält unerwartete Daten')
+        for i,token in enumerate(config['tokens'],1):
+            kid=module.Jugendlicher(vorname='Testkind '+str(i),nachname='NUR TEST',
+                geburtsdatum='2013-01-01',geschlecht='männlich',aktiv=True,
+                disziplin='Lichtpunkt Auflage',qr_token=token)
+            db.session.add(kid);db.session.flush()
+            db.session.add(module.Training(jugendlicher_id=kid.id,datum=date.today().isoformat(),
+                disziplin='Lichtpunkt Auflage',ringzahl=100+i*11,schuss_anzahl=20))
+        db.session.add(module.Termin(titel='TESTTERMIN – kein echter Vereinstermin',
+            datum=(date.today()+timedelta(days=1)).isoformat(),uhrzeit='17:00',zielgruppe='Jugend',ort='Nur Test'))
+        db.session.commit()
+        (ROOT/'private/seeded').write_text('synthetic-only\n')
+    if module.Jugendlicher.query.count()!=2 or module.Erwachsener.query.count()!=0:
+        raise RuntimeError('Unerwartete Personen im Testbestand')
+
+@app.before_request
+def read_only_test():
+    from flask import abort,request
+    if request.method not in ('GET','HEAD','OPTIONS') and request.endpoint not in (
+        'portal_adler.bind','portal_adler.tool','portal_adler.close'):
+        abort(403)
+
+
+
+from portal_adler.testing_mount import PREFIX, mount_isolated_test
+app.config['ADLER_ISOLATED_TEST']=True
+application=mount_isolated_test(app)
+
+
+def selftest():
+    import re
+    from werkzeug.test import Client
+    from werkzeug.wrappers import Response
+    count=0
+    for i,token in enumerate(config['tokens']):
+        c=Client(application,Response)
+        c.set_cookie('session','synthetic-production-cookie',domain='adlerzug.duckdns.org')
+        for suffix in ('','/ergebnisse','/abzeichen','/termine','/kontakt-downloads'):
+            response=c.get(PREFIX+'/jugend/'+token+suffix,base_url=config['origin'])
+            assert response.status_code==200 and 'ISOLIERTER PORTALTEST' in response.text
+            assert 'data-prefix="'+PREFIX+'"' in response.text
+            assert PREFIX+'/ki-adler/static/panel.js' in response.text
+            count+=1
+        csrf=re.search(r'data-csrf="([^"]+)"',response.text).group(1)
+        headers={'Origin':config['origin'],'X-CSRF-Token':csrf}
+        def post(path,value):return c.post(PREFIX+'/ki-adler/'+path,json=value,headers=headers,base_url=config['origin'])
+        bound=post('session',{'token':token});assert bound.status_code==200
+        headers['X-Adler-Binding']=bound.json['binding']
+        result=post('tool',{'tool':'last_training'})
+        assert result.status_code==200 and result.json['data']['score']==111+i*11
+        assert post('tool',{'tool':'last_training','member_id':999}).status_code==400
+        event=post('tool',{'tool':'next_event'});assert event.status_code==200
+        if event.json['data'] is not None:assert event.json['data']['title'].startswith('TESTTERMIN')
+        assert post('close',{}).status_code==200 and post('tool',{'tool':'last_training'}).status_code==401
+        assert c.get_cookie('session',domain='adlerzug.duckdns.org').value=='synthetic-production-cookie'
+        count+=7
+    c=Client(application,Response)
+    assert c.get('/jugend/'+config['tokens'][0],base_url=config['origin']).status_code==404
+    assert c.get('/',base_url=config['origin']).status_code==200
+    assert c.post(PREFIX+'/betreuer/login',data={'passwort':'anything'},base_url=config['origin']).status_code==403
+    print(json.dumps({'ok':True,'checks':count+3,'synthetic_only':True,'mounted':PREFIX}))
+
+if __name__=='__main__':
+    if sys.argv[1:] == ['selftest']:
+        selftest()
+    elif sys.argv[1:] == ['serve']:
+        from waitress import serve
+        serve(application,host='127.0.0.1',port=5071,threads=4)
+    else:
+        raise RuntimeError('Ungültige Aktion')

@@ -98,3 +98,14 @@ korrigiert, Regressionstest mit überlagernder fester Hostnavigation und Hit-Tes
 ergänzt. 191 Tests bestanden plus Browservergleich mit echten Seitenantworten.
 Reparaturskript ohne Neustart/Nginx-Änderung: ADLER-SCHALTFLAECHE.md. Pi-Anwendung
 und echte Safari-Abnahme dieser Korrektur noch offen.
+
+## Persönlicher Vereinsbegleiter nach QR-Anforderung
+
+P1-03/04/05/07 erweitert: gleiche persönliche QR-Zugänge, lokale Vorname-Begrüßung,
+Jugend-/Erwachsenen-Namensräume, eigene Ergebnisse/Fortschritt/Termine und vorhandene
+Jugendabzeichenberechnung; freundlicher Avatar, große/kleine/ausgeblendete Ansicht,
+Stimmenwahl und explizite Spracheinwilligung. Bestehende Menüs unverändert.
+P1-06 technisch angeschlossen, Betreiber-/Anbieterfreigabe und echter Inferenztest noch
+offen. Keine eigenmächtige externe Datenweitergabe. Konkreter Umfang, Installation,
+Rückweg und verbleibende Phasen: VEREINSBEGLEITER.md. Der bestehende 5071-Test wird
+in einem Schritt aktualisiert, keine weitere parallele Demo.

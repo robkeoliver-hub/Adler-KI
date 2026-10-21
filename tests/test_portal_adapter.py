@@ -26,6 +26,8 @@ def host():
         id = db.Column(db.Integer, primary_key=True)
         aktiv = db.Column(db.Boolean)
         qr_token = db.Column(db.String(64), unique=True)
+        vorname = db.Column(db.String)
+        geburtsdatum = db.Column(db.String)
 
     class Training(db.Model):
         id = db.Column(db.Integer, primary_key=True)
@@ -57,7 +59,7 @@ def host():
 
     with app.app_context():
         db.create_all()
-        db.session.add_all([Youth(id=1, aktiv=True, qr_token=TOKEN_A), Youth(id=2, aktiv=True, qr_token=TOKEN_B)])
+        db.session.add_all([Youth(id=1, aktiv=True, qr_token=TOKEN_A, vorname='Test Anna', geburtsdatum='2013-01-01'), Youth(id=2, aktiv=True, qr_token=TOKEN_B, vorname='Test Ben', geburtsdatum='2012-02-02')])
         db.session.add_all([Training(id=1, jugendlicher_id=1, datum='2026-10-01', disziplin='Synthetic-A', ringzahl=101, schuss_anzahl=20),
                             Training(id=2, jugendlicher_id=2, datum='2026-10-02', disziplin='Synthetic-B', ringzahl=202, schuss_anzahl=40)])
         tomorrow = (date.today() + timedelta(days=1)).isoformat()
