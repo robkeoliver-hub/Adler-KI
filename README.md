@@ -71,3 +71,7 @@ Maximal 600 Eingabezeichen, 8 KiB HTTP-Body, zehn Chats/Minute/Sitzung und globa
 Benchmark nutzt echte lokale HTTP-Aufrufe gegen einen kurzlebigen separaten Waitress-Server, keine Produktivdaten. Browser-Test benötigt zusätzlich Playwright und installierte Browser; siehe tests/browser_smoke.py. Ergebnisse und offene Prüfungen stehen in docs/TESTBERICHT.md. Keine garantierte Pi-/Sprachlatenz.
 
 Analyse vor Änderungen: [docs/ANALYSE.md](docs/ANALYSE.md), vollständige Routen/Modelle: [docs/INVENTAR.md](docs/INVENTAR.md), Integration erst nach Freigabe: [docs/INTEGRATIONSPLAN.md](docs/INTEGRATIONSPLAN.md).
+
+## Vorschau-Bilder im GitHub-Paket
+
+Die beiden Chromium-Screenshots sind verlustfrei als `docs/*.png.base64` enthalten, da die verwendete GitHub-Dateischnittstelle nur Textdateien übernimmt. Optional mit `.venv/bin/python scripts/restore_previews.py` als PNG wiederherstellen. Das ist für den Betrieb der Demo nicht erforderlich; die Anwendung selbst nutzt ausschließlich ihr eigenes SVG/CSS.
