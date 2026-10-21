@@ -6,13 +6,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright
 from test_portal_adapter import host, ORIGIN, TOKEN_A
+from portal_adler.testing_mount import PREFIX, mount_isolated_test
+from werkzeug.test import Client
+from werkzeug.wrappers import Response
 
 
 def run():
     with sync_playwright() as p:
         browser=p.chromium.launch(headless=True, executable_path=os.environ.get("CHROMIUM_EXECUTABLE"))
-        for width in (375,1280):
+        for width,prefix in ((375,''),(1280,''),(375,PREFIX),(1280,PREFIX)):
             fixture=host.__wrapped__();app,*_=next(fixture);client=app.test_client();errors=[]
+            if prefix:
+                app.config['ADLER_ISOLATED_TEST']=True
+                client=Client(mount_isolated_test(app),Response)
             context=browser.new_context(viewport={'width':width,'height':900})
             def handler(route):
                 req=route.request;url=urlsplit(req.url)
@@ -28,7 +34,7 @@ def run():
                 window.SpeechRecognition=class{constructor(){window.rec=this;}start(){this.onstart?.();}abort(){window.aborts++;}};
             ''')
             page=context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
-            page.goto(ORIGIN+'/jugend/'+TOKEN_A)
+            page.goto(ORIGIN+prefix+'/jugend/'+TOKEN_A)
             assert page.locator('nav a').get_attribute('href')=='/existing'
             page.locator('[data-open]').click()
             page.locator('[data-question]').fill('Mein letztes Ergebnis')
@@ -64,7 +70,7 @@ def run():
         try:next(fixture)
         except StopIteration:pass
         browser.close()
-    print('Portal browser: 375/1280, typed silent, replay, spoken input, stop/close, Escape, fallback and navigation passed')
+    print('Portal browser: root and mounted prefix, 375/1280, typed silent, replay, spoken input, stop/close, Escape, fallback and navigation passed')
 
 
 if __name__=='__main__':run()
