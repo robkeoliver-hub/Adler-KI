@@ -1,0 +1,8 @@
+{
+  "ADLER_DIALOGUE_PROVIDER": "off",
+  "ADLER_DIALOGUE_APPROVED": false,
+  "ADLER_DIALOGUE_ENDPOINT": "",
+  "ADLER_DIALOGUE_MODEL": "@cf/meta/llama-3.1-8b-instruct",
+  "ADLER_DIALOGUE_KEY": "",
+  "ADLER_DIALOGUE_PROCESSOR_NOTICE": "Cloudflare Workers AI – externe Verarbeitung nach gesonderter Prüfung"
+}
