@@ -110,3 +110,5 @@ Der nächste isolierte Test des bestehenden Portals ist in [Portaltest auf dem P
 [Bestehende Portal-Testkopie für den HTTPS-Pfad aktualisieren](docs/entwicklung/TESTMOUNT-UPDATE.md): mit Sicherung und Rücknahme, ohne Nginx-Aktivierung.
 
 [Letzte HTTPS-Prüfung und gesonderte Aktivierung](docs/entwicklung/HTTPS-AKTIVIERUNG.md): --check verändert keine aktive Nginx-Datei; --apply erst nach Freigabe.
+
+[Adler-Schaltfläche über der festen Navigation sichtbar machen](docs/entwicklung/ADLER-SCHALTFLAECHE.md): kleine CSS-Korrektur der vorhandenen Testkopie ohne Neustart.
