@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ url_for('portal_adler.static', filename='panel.css') }}">
-<div id="portal-adler" data-api="{{ url_for('portal_adler.bind') }}" data-csrf="{{ csrf }}">
+<div id="portal-adler" data-api="{{ url_for('portal_adler.bind') }}" data-csrf="{{ csrf }}" data-prefix="{{ request.script_root }}">
 <button type="button" data-open aria-expanded="false" aria-controls="portal-adler-dialog">🦅 KI-Adler</button>
 <section id="portal-adler-dialog" aria-label="KI-Adler" hidden>
 <header><strong>KI-Adler</strong><button type="button" data-close aria-label="KI-Adler schließen">Schließen</button></header>

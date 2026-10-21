@@ -38,7 +38,7 @@
     controller = new AbortController(); status('Ich sehe im Portal nach …');
     try {
       if (!ready) {
-        const match = location.pathname.match(/^\/jugend\/([^/]+)(?:\/|$)/);
+        const match = location.pathname.slice((root.dataset.prefix || '').length).match(/^\/jugend\/([^/]+)(?:\/|$)/);
         if (!match) throw Error('Bitte dein persönliches Jugendportal öffnen.');
         const session = await api('/session', {token:decodeURIComponent(match[1])}, controller.signal);
         if (mine !== generation) return; binding = session.binding; ready = true;
