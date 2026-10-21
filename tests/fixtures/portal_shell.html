@@ -1,0 +1,10 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Synthetische Integrations-Testhülle, kein Vereinsportal</title>
+<link rel="stylesheet" href="/demo/ki-adler/static/companion.css">
+<script defer src="/demo/ki-adler/static/companion.js"></script></head><body>
+<nav id="existing-nav" aria-label="Bestehende Testnavigation"><a href="/fixture/start">Start</a> <a href="/fixture/ergebnisse">Ergebnisse</a> <a href="/fixture/abzeichen">Abzeichen</a> <a href="/fixture/termine">Termine</a></nav>
+<main><h1>Synthetische Testhülle</h1><p>Diese Seite prüft ausschließlich die Komponente und ist keine neue Mitgliederverwaltung.</p>
+<form action="/fixture/update" method="get"><label>Vorhandenes Testformular <input name="value" value="synthetic"></label><button type="submit">Testformular senden</button></form>
+{% from "_companion.html" import companion %}
+{% call companion(initially_open=false) %}<p>Optionaler Testbegleiter ohne Datenzugriff</p><input aria-label="Begleiter-Testeingabe">{% endcall %}
+</main></body></html>
