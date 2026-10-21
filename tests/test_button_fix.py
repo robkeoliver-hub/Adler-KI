@@ -12,7 +12,7 @@ m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 def prepare(tmp_path):
     root=tmp_path/'ki-adler-portaltest';css=root/m.KEY;css.parent.mkdir(parents=True)
     (root/'private').mkdir()
-    new=(ROOT/'portal_adler/static/panel.css').read_bytes()
+    new=(ROOT/'tests/fixtures/panel-pr12.css').read_bytes()
     old=new.replace(b'bottom:calc(100px + env(safe-area-inset-bottom))',b'bottom:calc(12px + env(safe-area-inset-bottom))')
     assert m.sha(old)==m.OLD and m.sha(new)==m.NEW
     css.write_bytes(old);manifest=root/'private/code-hashes.json';manifest.write_text(json.dumps({m.KEY:m.OLD,'unrelated':'keep'}))
