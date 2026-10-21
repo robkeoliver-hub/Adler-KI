@@ -1,0 +1,14 @@
+{# Optional presentation wrapper, never an authentication or portal-data adapter. #}
+{% macro companion(initially_open=true) -%}
+<div data-adler-shell>
+  <div class="adler-companion-tools">
+    <button type="button" data-adler-toggle aria-controls="adler-companion-panel" aria-expanded="{{ 'true' if initially_open else 'false' }}" hidden>
+      {{ 'KI-Adler ausblenden' if initially_open else 'KI-Adler einblenden' }}
+    </button>
+  </div>
+  <section id="adler-companion-panel" data-adler-panel aria-label="KI-Adler Sprach- und Chatbegleiter"{% if not initially_open %} hidden{% endif %}>
+    {{ caller() }}
+  </section>
+  <noscript><p>Der optionale KI-Begleiter benötigt JavaScript. Die normalen Portalmenüs bleiben unabhängig davon bedienbar.</p></noscript>
+</div>
+{%- endmacro %}
