@@ -1,0 +1,28 @@
+[Unit]
+Description=Isolierte KI-Adler Demo (kein Zugriff auf Vereinsdaten)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/ki-adler
+ExecStart=%h/ki-adler/.venv/bin/python %h/ki-adler/run.py
+Environment=PYTHONDONTWRITEBYTECODE=1
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadOnlyPaths=%h/ki-adler
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+# Memory/cgroup limits depend on Raspberry Pi OS user-manager configuration.
+MemoryMax=160M
+TasksMax=24
+
+[Install]
+WantedBy=default.target
