@@ -1,0 +1,5 @@
+/* Wrapper styles only: no portal navigation, root, body or button resets. */
+[data-adler-shell] .adler-companion-tools{display:flex;justify-content:flex-end;margin:0 0 12px}
+[data-adler-shell] [data-adler-toggle]{min-height:44px;padding:10px 14px;border:1px solid #c6f36a66;border-radius:10px;background:#172a29;color:#e6f7d1;font:inherit;font-size:.82rem;cursor:pointer}
+[data-adler-shell] [data-adler-toggle]:focus-visible{outline:2px solid #c6f36a;outline-offset:3px}
+[data-adler-shell] [hidden]{display:none!important}
