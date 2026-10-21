@@ -98,3 +98,7 @@ In der Demo lässt sich KI-Adler jetzt ein-/ausblenden. Ausblenden beendet Mikro
 ## Installation auf dem bestehenden Raspberry Pi
 
 [Geprüfter Bookworm-Installer, Umschaltung und Rückkehr](docs/INSTALLATION-PI-BOOKWORM.md). Keine automatische Portalintegration; vorhandener Demo-Stand aus PR #4.
+
+## Erste Einbindung in das bestehende Portal
+
+Der aktuelle Portalexport wurde privat untersucht. Der optionale, standardmäßig deaktivierte Portaladapter und seine Grenzen sind in [P1-03-PORTAL-LESEN](docs/entwicklung/P1-03-PORTAL-LESEN.md) beschrieben. Keine automatische Installation; die vorhandene Demo bleibt unverändert.
