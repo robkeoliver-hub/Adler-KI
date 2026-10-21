@@ -1,0 +1,322 @@
+[
+  {
+    "path": "KORREKTUR_FREIHAND.md",
+    "bytes": 1005,
+    "sha256": "d3d48f1f28128dcaa5185a1ea1da372bc0f6afd1aba7f6ac59a354c147bf5ea3"
+  },
+  {
+    "path": "fix_youth_freihand.py",
+    "bytes": 5641,
+    "sha256": "79debeca97ab035761b30d0fdff59c08510ff78b28f5e028b7f7832994f7a410"
+  },
+  {
+    "path": "UPDATE_ABZEICHEN.md",
+    "bytes": 2509,
+    "sha256": "2ad94f5a0eee7cf6609eec583285fd5336aea84ffaa7849213f3c6dfa2a71f25"
+  },
+  {
+    "path": "start.sh",
+    "bytes": 171,
+    "sha256": "5fd338b541ba27d29aea572888a7b7e6b6aa15ed0da77856d66c15ef050eadb1"
+  },
+  {
+    "path": "app.py",
+    "bytes": 145377,
+    "sha256": "0372372fd9a0459a0772e9e839bf658a6776ea7ddc4d02cb1c2b3ed46c62d78f"
+  },
+  {
+    "path": "JUGEND_ABZEICHEN_UPDATE.md",
+    "bytes": 1591,
+    "sha256": "55b850fda5e969e4fadd958db8d62a9e7d3f6e3be4ca79b2dde29f943871e68d"
+  },
+  {
+    "path": "schuetzenjugend.service.example",
+    "bytes": 469,
+    "sha256": "9acf74637184a07925e978fd14ca03b8d5e48fe550dd338d1784381b16fd9917"
+  },
+  {
+    "path": "migrate_youth_badges.py",
+    "bytes": 8283,
+    "sha256": "aa3bde7dde9c16b3f84e0688d09c0942daee391fa6c3ce7200bd563ecc463547"
+  },
+  {
+    "path": "update_youth_badges.py",
+    "bytes": 3917,
+    "sha256": "a4e7e708d4cd48bf76be9a56bc396be3717be968248ed6382a291a0c2a7e77d2"
+  },
+  {
+    "path": "README.md",
+    "bytes": 6196,
+    "sha256": "714bfd0e1da27701351d3dca2b26b13bdfd59203ce6367a5793bd48a2feb6147"
+  },
+  {
+    "path": "meyton_ocr.py",
+    "bytes": 11425,
+    "sha256": "c929dae2e0c6fc21037d2a9351c34688ebadb79f9affeaa97855ccdb3d3ebacf"
+  },
+  {
+    "path": "requirements.txt",
+    "bytes": 105,
+    "sha256": "b8bc3e69334772ba7610e0bc4a0105c61618319a2828866211c8a8ac2fe405e7"
+  },
+  {
+    "path": "ZUGRIFF_VON_AUSSERHALB.md",
+    "bytes": 3698,
+    "sha256": "74d423af136c8610780d95c6dbacee76f4ddfcdc134e30e8af226d4edebd7e2a"
+  },
+  {
+    "path": "VERBANDSABZEICHEN.md",
+    "bytes": 3918,
+    "sha256": "e072d24d909091a038184689ef519641c81839d6c59539b49820a50447fb8a50"
+  },
+  {
+    "path": "templates/kontakt_downloads.html",
+    "bytes": 8159,
+    "sha256": "5e6da7f3fc30f435e8abc10a4827c9e28a44f08c819bf234a0485bcb9815ad0d"
+  },
+  {
+    "path": "templates/_badge_icons.html",
+    "bytes": 5638,
+    "sha256": "6847ce1aace021cd5100de2a30f263167c227f24492815001936765db9c3aa7e"
+  },
+  {
+    "path": "templates/_leistungsstatistik_inline.html",
+    "bytes": 1698,
+    "sha256": "5b26581fed435773545714ed1ccac9856519e88eb2778ecf2714fd814ccbdbff"
+  },
+  {
+    "path": "templates/base.html",
+    "bytes": 3192,
+    "sha256": "6d2d1b1fe53b2ccf48e05ae0f0bf8c6634e65e0c8eb95b437517d158b6e30adc"
+  },
+  {
+    "path": "templates/_home_performance_cards.html",
+    "bytes": 3889,
+    "sha256": "bb460014daf110e448c724c46f6650caa0f497c2a25af6db1ce5963e5e19140e"
+  },
+  {
+    "path": "templates/urkunde.html",
+    "bytes": 2085,
+    "sha256": "103d013406ef76f5d7aa94590feec6b77724c1b11213c6999f5ad56126aaa86e"
+  },
+  {
+    "path": "static/css/style.css",
+    "bytes": 43194,
+    "sha256": "4f71dc1873face3052f42935c62be4eb7f7386327fb9bd9d8ccf1cb0745234d5"
+  },
+  {
+    "path": "static/pwa/service-worker.js",
+    "bytes": 1165,
+    "sha256": "d550e881a10cd5ad556d7d8a06035510d6e75987e75702d1aacc974275e559a1"
+  },
+  {
+    "path": "static/js/member-filters.js",
+    "bytes": 2100,
+    "sha256": "e5bba37eed9e47a1ae87ae72a3f11263919fd6717562e63874a727ce6330343d"
+  },
+  {
+    "path": "static/js/meyton-entry.js",
+    "bytes": 662,
+    "sha256": "5565b92ec988c4eb55f01ca0ecf8927e9ae2fc08f09f60cdf1aee7702e5c7229"
+  },
+  {
+    "path": "static/js/member-rewards.js",
+    "bytes": 2372,
+    "sha256": "f64ba09daae3496ca1901678f98f3ca6d99a7ab7dbdc8593300e495026b61fa2"
+  },
+  {
+    "path": "static/images/BSV-Logo.png",
+    "bytes": 108650,
+    "sha256": "a7dc4a56ad403f014af02eef323fa7c7dd7cd100343305b5da21d948b94a249f"
+  },
+  {
+    "path": "templates/demo/profil.html",
+    "bytes": 4946,
+    "sha256": "5bbd6012649eeb35f06c6a6dcbb4c3f7cc4c569338cf58c703c47fd74f359b0b"
+  },
+  {
+    "path": "templates/betreuer/termine.html",
+    "bytes": 1952,
+    "sha256": "1ea6997b43d426055c3d792c0dfd459c0119e38dfe9ff7eb1e345af649308690"
+  },
+  {
+    "path": "templates/betreuer/training_kid.html",
+    "bytes": 2759,
+    "sha256": "fba9458f795d9151dd087165ef744d728681f9b21ef3671724749276054c72da"
+  },
+  {
+    "path": "templates/betreuer/meyton.html",
+    "bytes": 8184,
+    "sha256": "0ac144d0dfd0e6446293f942c766a5fb3cdf53370dc616a7fe5ecdfa0b2ad786"
+  },
+  {
+    "path": "templates/betreuer/erwachsene.html",
+    "bytes": 2610,
+    "sha256": "3286a5108f9d45634897255e318b9148043084e25b3615e72195e11ef8f4e63f"
+  },
+  {
+    "path": "templates/betreuer/dashboard.html",
+    "bytes": 13447,
+    "sha256": "83a75a3babf66c227d1710d96dc3c73b6419a27b151d954ee24be54706b1b883"
+  },
+  {
+    "path": "templates/betreuer/badges0.html",
+    "bytes": 1918,
+    "sha256": "273168ae5481b0ef6d4dc8856e864158e2c14ab98688f118e3add2223c046312"
+  },
+  {
+    "path": "templates/betreuer/auszeichnungen.html",
+    "bytes": 3825,
+    "sha256": "a350c30d540213c4049147d86393bdf200128aabe89710041db25c7df53b8dd9"
+  },
+  {
+    "path": "templates/betreuer/erwachsenes_ergebnis_edit.html",
+    "bytes": 1880,
+    "sha256": "791e475b19881bd7163b46c97c7c90cc055a132a26b526aeb615d1c1a5388433"
+  },
+  {
+    "path": "templates/betreuer/gluecksscheibe.html",
+    "bytes": 3036,
+    "sha256": "9590f73ae1a8397c0617978fe0f0a49943910d614d79127cda0838545a352388"
+  },
+  {
+    "path": "templates/betreuer/termin_edit.html",
+    "bytes": 1165,
+    "sha256": "aa31e2c70a44a7d36279de39f8c46c066ded66753439d269ee2583fba12ea6e9"
+  },
+  {
+    "path": "templates/betreuer/training_new.html",
+    "bytes": 2630,
+    "sha256": "6c9028a4548916d7a029fae59b213db9432b7f9a95989e3ea06590cd019ccc75"
+  },
+  {
+    "path": "templates/betreuer/training_edit.html",
+    "bytes": 4007,
+    "sha256": "a32828b046da15c5f07344ddedcccf7203d58efdb54735ebfc22731d1a36e89c"
+  },
+  {
+    "path": "templates/betreuer/training.html",
+    "bytes": 1769,
+    "sha256": "c67298e4208bc93f34323aa34f9407b9fc02fcaf42299532484f07dc06178d80"
+  },
+  {
+    "path": "templates/betreuer/youth_edit.html",
+    "bytes": 2900,
+    "sha256": "dd8ca8e90b06f8958775519111062aaef853aeb3aba5dc8383350685d0f32969"
+  },
+  {
+    "path": "templates/betreuer/_nav.html",
+    "bytes": 782,
+    "sha256": "00b62b652f42f921451baec41a6e162e8a698671378da15ca643a4e4cee90d39"
+  },
+  {
+    "path": "templates/betreuer/login.html",
+    "bytes": 588,
+    "sha256": "d43b4f5011ae8a325e4bc53c6fed59c775caf30e92ad9903ce2570b4e0f61a17"
+  },
+  {
+    "path": "templates/betreuer/badges.html",
+    "bytes": 10234,
+    "sha256": "be768943177ad6103be2c0a5d2c16e6c9e24b64afcb09de1c0847f9d1ff246c5"
+  },
+  {
+    "path": "templates/betreuer/erwachsene_ergebnisse.html",
+    "bytes": 1214,
+    "sha256": "cbfbdaed022bd7308bdb91ea3a2ad4e7e82938385a78ff1a1121c3e7dba7b0b9"
+  },
+  {
+    "path": "templates/betreuer/youths.html",
+    "bytes": 3333,
+    "sha256": "de3e3e8a0c71214140a6101510076a8e81bad5ff8be23c693b277f6c3402cdbd"
+  },
+  {
+    "path": "templates/betreuer/badge_edit.html",
+    "bytes": 3097,
+    "sha256": "b6b310da5d5ed1d529ecf5fda871d71bf9643133a19c8bac1f3f6570a4961e05"
+  },
+  {
+    "path": "templates/betreuer/erwachsener_edit.html",
+    "bytes": 2846,
+    "sha256": "6ea106bfa8373861c8bc0d76aa001671fcef8a91dc6cf984e718fde63d53b3d6"
+  },
+  {
+    "path": "templates/jugend/termine.html",
+    "bytes": 1828,
+    "sha256": "03ab6ddda3548f1dab3258574f31cd20d16fc3ee8785c165f492cd6f6d65fa70"
+  },
+  {
+    "path": "templates/jugend/ergebnisse.html",
+    "bytes": 2512,
+    "sha256": "b303ee07ff1ffaf4574a9df30fdfa16b8c3a78ac06f08560f442fcdf86c948d2"
+  },
+  {
+    "path": "templates/jugend/start.html",
+    "bytes": 4425,
+    "sha256": "371af9deb366968b9a6a2289b542c07d260ab220aa722f9916fd724dd8ee98f7"
+  },
+  {
+    "path": "templates/jugend/leistungsstatistik.html",
+    "bytes": 2927,
+    "sha256": "c19ec7f2e2a9a6d3d02eb3cbd2d2935cbcba0ed1bb1e0c9ddf73e4a3c3d2990b"
+  },
+  {
+    "path": "templates/jugend/statistik.html",
+    "bytes": 6103,
+    "sha256": "971c8cf80101c16e3c6ab86b50152494d1f847c36ac621ff3742f9973e5fc1b6"
+  },
+  {
+    "path": "templates/jugend/training.html",
+    "bytes": 1474,
+    "sha256": "dab5cc38e6f24db16b0965442bcd2966f5ef5aa541e91e63bed1461c1ad8e898"
+  },
+  {
+    "path": "templates/jugend/_nav.html",
+    "bytes": 2379,
+    "sha256": "eb24df9312c6a1f5b503e7268c36906a82581c1629c09f1e3828830900647e1b"
+  },
+  {
+    "path": "templates/jugend/abzeichen.html",
+    "bytes": 14190,
+    "sha256": "9f5a058f24982b955bb68b6947fbcc1b0cc83516f2502411478942b8a0828cc5"
+  },
+  {
+    "path": "templates/erwachsene/termine.html",
+    "bytes": 1654,
+    "sha256": "b5e02a1bcf6d7436fcab34137877b0804e50e7627b469ba1cac02ee304d75881"
+  },
+  {
+    "path": "templates/erwachsene/ergebnisse.html",
+    "bytes": 3128,
+    "sha256": "cb8f131130e3a1238252ebd3525b0e18af990aa16439c43d77a475cfe06b2626"
+  },
+  {
+    "path": "templates/erwachsene/ergebnis_bearbeiten.html",
+    "bytes": 1868,
+    "sha256": "5a80e4a6188913abcf37d8a211a104025c233099274c3380674727ce674b6bf6"
+  },
+  {
+    "path": "templates/erwachsene/upload.html",
+    "bytes": 8089,
+    "sha256": "f79c23caef07a02986d3be90e47e0eb66c0d3154b5ebd61783cd4055a6842f0c"
+  },
+  {
+    "path": "templates/erwachsene/start.html",
+    "bytes": 5534,
+    "sha256": "f8c196cc72c15243048137c45274ff8ae1bfc979ba59a04779b7ea388d003a48"
+  },
+  {
+    "path": "templates/erwachsene/leistungsstatistik.html",
+    "bytes": 2955,
+    "sha256": "73388a97984e23f634ae40282bd833b86e410630fb1cedf80f22dbd4e7ae7278"
+  },
+  {
+    "path": "templates/erwachsene/_nav.html",
+    "bytes": 1098,
+    "sha256": "cf53cd2835e949cabf8bcbd0297acc5efaf796bfc5252206fb111d1dd049df4a"
+  },
+  {
+    "path": "templates/erwachsene/abzeichen.html",
+    "bytes": 7281,
+    "sha256": "f6de3a0a213c88aa8ce2f12b760bb2b307d8412488ee28a4ba1496bb18ce9023"
+  }
+]
