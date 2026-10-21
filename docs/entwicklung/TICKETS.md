@@ -39,3 +39,15 @@ Mergeabhängigkeiten #1/#2 sind geprüft und ihre Beschreibungen vorbereitet; be
 ## Aktualisierung nach Begleiter-Vorbereitung
 
 Ein-/Ausblenden, Stop beim Schließen, Fokus/Escape und das bestehende Gespräch sind in der isolierten Demo geprüft. 76 pytest-Tests und Chromium-Smoke mit zwei Viewports sowie synthetischer Hostnavigation/Formularen mit/ohne JavaScript bestanden. Das schließt P1-05 nicht ab: tatsächliche Portalmenüs und gemeinsame Authentifizierung bleiben ohne aktuelle Portalquellen unprüfbar. Siehe P1-05-BEGLEITER-VORBEREITUNG.md. P1-03/04 bleiben gesperrt statt einer neuen Mitglieder-/Kalenderverwaltung.
+
+## Aktueller Stand: Konsolidierung und Exportprüfung (21.10.2026)
+
+Die obigen PR-Offenstände sind historisch: PR #1–#5 sind inzwischen in main
+zusammengeführt; die tatsächliche Pi-Aktivierung der Demo wurde vom Betreiber
+bestätigt. Kein Remote-Deployment durch Codex. 98 Basistests bestehen weiterhin.
+P0-02 hat jetzt ein eigenständig testbares Nur-Lese-Prüfwerkzeug für das vorbereitete
+Portal-ZIP (21 zusätzliche Tests, insgesamt 119). Es ersetzt keine manuelle Prüfung.
+Siehe PORTAL-EXPORT-PRUEFUNG.md für Befehle und die konkrete Integrationsreihenfolge.
+P0-02 bleibt bis zur Prüfung des aktuellen Exports offen; P1-03/04 und echte P1-05-
+Einbettung bleiben davon abhängig. Keine neue Mitgliederverwaltung oder Fake-Daten
+im Produktivmodus. Autostart wird erst nach Prüfung des bisherigen Bootstarts aktiviert.
