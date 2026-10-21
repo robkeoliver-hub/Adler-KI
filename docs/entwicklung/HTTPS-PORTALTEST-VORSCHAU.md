@@ -52,7 +52,7 @@ sudo gilt hier ausschließlich dem lesenden nginx -T. Der Pythonprozess läuft a
 pi und benötigt keine Rootrechte. Er schreibt nur in
 ~/ki-adler-portaltest/private/proxy-preview/:
 
-- original.conf: unveränderte aktuelle Site als private Wiederherstellungsgrundlage;
+- snapshot.conf: Site-Snapshot für die Vorschau, ausdrücklich kein Wiederherstellungsbackup;
 - candidate.conf: private Vorschau mit genau dem zusätzlichen Block;
 - report.json: Zielpfad und Prüfsummen, applied=false.
 
@@ -65,7 +65,12 @@ Der konservative Parser beachtet Kommentare und Anführungszeichen, sucht genau
 einen SSL-Server auf 443 mit dem bekannten Namen und bestätigt die beiden
 bestehenden Weiterleitungen. Mehrdeutige Zielserver, abweichende Zielports,
 Server-Includes und bereits vorhandene Testregeln führen zum Abbruch statt zu
-Vermutungen. Aktueller Dateiinhalt und nginx-Dump müssen zusammenpassen. Es wird
+Vermutungen. Wenn die Site für pi direkt lesbar ist, müssen aktueller Dateiinhalt und nginx-Dump
+zusammenpassen. Bei einer nur durch root lesbaren Site genügt für die reine Vorschau
+der bereits mit sudo nginx -T gelesene Snapshot. Der Report kennzeichnet dann
+snapshot_disk_verified=false und restorable_backup=false. Keine Dateirechte ändern
+und Python nicht als root starten. Vor einer späteren Aktivierung ist immer ein
+neues privilegiertes Originalbackup mit erneuter Inhalts-/Hashprüfung erforderlich. Es wird
 keine aktive Datei überschrieben, kein nginx -t gestartet und kein Reload ausgeführt.
 Der Parser ersetzt nicht die spätere echte nginx-Syntaxprüfung.
 
@@ -108,7 +113,7 @@ konkreten Block vor. Diese Vorschau ist deshalb ausdrücklich keine Aktivierung.
 
 ## Nachweise und offene Abnahme
 
-156 pytest-Tests bestanden: 143 bestehende und 13 neue Parser-/Mount-/Cookietests.
+161 pytest-Tests bestanden: 143 bestehende und 18 Parser-/Mount-/Cookie-/Diagnosetests.
 Chromium 375/1280 sowohl am Root als auch unter dem Präfix bestanden, einschließlich
 Text stumm, simulierter Sprache, Replay, Schließen und Textfallback.
 Zusätzlich wurde die tatsächliche private Portal-Kopie mit den neuen Dateien lokal
@@ -119,3 +124,13 @@ Weder Originalportal noch aktive Pi-Testkopie wurden hierfür verändert.
 Keine echte Nginx-Syntaxprüfung, HTTPS-Freischaltung, iPhone-Speech-Abnahme oder
 Pi-Mountprüfung behauptet. Rücknahme dieses PR vor einem Deployment: keine Aktion
 am Pi nötig. Die private Vorschau kann liegen bleiben; keine Dienste hängen davon ab.
+
+## Korrektur nach erstem Pi-Vorschauversuch
+
+Die erste Version gab bei einem lokalen Dateifehler nur eine allgemeine Meldung aus.
+Die tatsächliche Ursache ist aus dem Screenshot nicht bestimmbar. Die Korrektur
+unterscheidet nun feste Arbeitsschritte und sichere Fehlerklassen (z.B. Zugriff
+verweigert, Datei fehlt, Speicher voll), ohne Ausnahmeinhalt oder Konfigurationswerte
+auszugeben. Nur per nginx -T lesbare Sites werden für die private Vorschau unterstützt.
+Zusätzliche Tests führen den Vorschauablauf mit simulierter root-only Site und vollem
+Datenträger durch. Eine aktive Nginx-Konfiguration wird auch bei Fehlern nie geändert.
