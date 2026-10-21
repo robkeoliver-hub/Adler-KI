@@ -59,3 +59,12 @@ seiten, Testbanner, keine Portal-Schreibaktionen. 143 pytest-Tests plus echter C
 Aufbau mit 23 integrierten Prüfungen und Start/Stopp/Neustart bestanden.
 Siehe PORTALTEST-AUF-DEM-PI.md. Noch keine Pi-Installation; iPhone-Testadresse ist
 bis zur tatsächlichen Proxy-/TLS-Prüfung und konkreten Freigabe offen.
+
+## HTTPS-Testvorbereitung nach Pi-Nachweis
+
+Betreiber bestätigt Portaltest 5071 und Nginx-Zuordnung 5057/5000. Testpräfix und
+Cookie-Isolation implementiert und mit synthetischen sowie tatsächlichen privaten
+Portaltemplates geprüft. 156 pytest-Tests und Browserprüfungen bestanden.
+preview_test_proxy.py erzeugt ausschließlich eine private Nginx-Vorschau ohne Reload.
+Aktive Testkopie bleibt unverändert; kontrolliertes Mount-Update und konkrete
+Proxyfreigabe sind als Nächstes nötig. Details HTTPS-PORTALTEST-VORSCHAU.md.
