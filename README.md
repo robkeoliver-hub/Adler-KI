@@ -108,3 +108,5 @@ Der nächste isolierte Test des bestehenden Portals ist in [Portaltest auf dem P
 [HTTPS-Testpfad und private Nginx-Vorschau](docs/entwicklung/HTTPS-PORTALTEST-VORSCHAU.md): vorbereitet, noch nicht am laufenden Webserver aktiviert.
 
 [Bestehende Portal-Testkopie für den HTTPS-Pfad aktualisieren](docs/entwicklung/TESTMOUNT-UPDATE.md): mit Sicherung und Rücknahme, ohne Nginx-Aktivierung.
+
+[Letzte HTTPS-Prüfung und gesonderte Aktivierung](docs/entwicklung/HTTPS-AKTIVIERUNG.md): --check verändert keine aktive Nginx-Datei; --apply erst nach Freigabe.
