@@ -28,3 +28,8 @@ $('mic').addEventListener('click',()=>{error();if(recognition){stopAudio();retur
 document.addEventListener('visibilitychange',()=>{if(document.hidden)cancel();});
 window.addEventListener('pagehide',()=>{cancel();if(csrf)fetch(base+'logout',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json','X-CSRF-Token':csrf},body:'{}'}).catch(()=>{});});
 window.addEventListener('pageshow',async e=>{if(e.persisted){reset();return;}try{activate(await api('session'));}catch(_){}});
+
+// Closing the optional companion must never leave listening/speech active.
+document.addEventListener('adler:hide',event=>{
+  if(event.target.contains($('compose')))cancel();
+});
