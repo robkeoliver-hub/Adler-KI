@@ -36,7 +36,10 @@ def run():
             page=context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
             page.goto(ORIGIN+prefix+'/jugend/'+TOKEN_A)
             assert page.locator('nav a').get_attribute('href')=='/existing'
-            page.locator('[data-open]').click()
+            button=page.locator('[data-open]')
+            assert button.evaluate('b=>{const r=b.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===b}')
+            assert button.bounding_box()['y']+button.bounding_box()['height'] < page.locator('nav').bounding_box()['y']
+            button.click()
             page.locator('[data-question]').fill('Mein letztes Ergebnis')
             page.locator('#portal-adler form button').click()
             page.get_by_text('101 Ringe',exact=False).wait_for()
