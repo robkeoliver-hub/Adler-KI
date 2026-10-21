@@ -96,3 +96,58 @@ def test_mount_requires_explicit_isolated_flag(host):
 def test_nginx_empty_strings_and_braced_variables():
     source=SITE.replace('ssl_certificate /synthetic/cert.pem;', 'proxy_set_header Connection ""; set $value http://${host};')
     assert m.make_candidate({'/etc/nginx/sites-enabled/synthetic':source})[2].replace(m.BLOCK,'',1)==source
+
+
+def test_snapshot_readable_is_compared():
+    class Source:
+        def read_text(self):return SITE
+    assert m.read_snapshot(Source(),SITE+'\n')==(SITE,True)
+
+
+def test_root_only_site_uses_dump_for_preview_only():
+    class Source:
+        def read_text(self):raise PermissionError(13,'SYNTHETIC-SECRET-MUST-NOT-PRINT')
+    assert m.read_snapshot(Source(),SITE)==(SITE,False)
+
+
+def test_changed_site_still_refuses_preview():
+    class Source:
+        def read_text(self):return SITE+'# changed\n'
+    with pytest.raises(m.PreviewError):m.read_snapshot(Source(),SITE)
+
+
+@pytest.mark.parametrize('disk_full',[False,True])
+def test_main_root_only_site_and_safe_write_diagnostics(tmp_path,monkeypatch,capsys,disk_full):
+    import io,json,os
+    real=type(Path())
+    site='/etc/nginx/sites-enabled/synthetic'
+    class FakePath(real):
+        @classmethod
+        def home(cls):return cls(tmp_path)
+        def resolve(self,*args,**kwargs):
+            if str(self).startswith('/etc/nginx'):return self
+            return super().resolve(*args,**kwargs)
+        def read_text(self,*args,**kwargs):
+            if str(self)==site:raise PermissionError(13,'SYNTHETIC-SECRET-MUST-NOT-PRINT')
+            return super().read_text(*args,**kwargs)
+    private=tmp_path/'ki-adler-portaltest/private';private.mkdir(parents=True)
+    (private/'state.json').write_text('{}')
+    monkeypatch.setattr(m,'Path',FakePath)
+    monkeypatch.setattr(m.sys,'stdin',io.StringIO('# configuration file '+site+':\n'+SITE))
+    if disk_full:
+        def fail(*args):raise OSError(28,'SYNTHETIC-SECRET-MUST-NOT-PRINT')
+        monkeypatch.setattr(m,'write_private',fail)
+    old=os.umask(0o077)
+    try:
+        if disk_full:
+            with pytest.raises(SystemExit):m.main()
+        else:m.main()
+    finally:os.umask(old)
+    output=capsys.readouterr()
+    assert 'SYNTHETIC-SECRET' not in output.out+output.err
+    if disk_full:assert 'Private Vorschau speichern' in output.err and 'Speicher voll' in output.err
+    else:
+        report=json.loads((private/'proxy-preview/report.json').read_text())
+        assert report['applied'] is False and report['snapshot_disk_verified'] is False and report['restorable_backup'] is False
+        assert (private/'proxy-preview/candidate.conf').stat().st_mode&0o777==0o600
+        assert 'VORSCHAU BEREIT' in output.out
