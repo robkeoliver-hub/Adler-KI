@@ -1,15 +1,22 @@
-<link rel="stylesheet" href="{{ url_for('portal_adler.static', filename='panel.css') }}">
-<div id="portal-adler" data-api="{{ url_for('portal_adler.bind') }}" data-csrf="{{ csrf }}" data-prefix="{{ request.script_root }}">
-<button type="button" data-open aria-expanded="false" aria-controls="portal-adler-dialog">🦅 KI-Adler</button>
+<link rel="stylesheet" href="{{ url_for('portal_adler.static', filename='panel.css') }}?v=begleiter1">
+<div id="portal-adler" data-api="{{ url_for('portal_adler.bind') }}" data-csrf="{{ csrf }}" data-prefix="{{ request.script_root }}" data-name="{{ display_name }}" data-state="idle" style="--adler-art:url('{{ url_for('portal_adler.avatar') }}')">
+<button type="button" data-open aria-expanded="false" aria-controls="portal-adler-dialog"><span class="adler-face" aria-hidden="true"></span><span>KI-Adler<span class="adler-launch-sub">Dein Vereinsbegleiter</span></span></button>
 <section id="portal-adler-dialog" aria-label="KI-Adler" hidden>
-<header><strong>KI-Adler</strong><button type="button" data-close aria-label="KI-Adler schließen">Schließen</button></header>
-<p>Ich kann dein letztes Training und den nächsten Jugendtermin nachsehen. Freie KI-Gespräche sind noch nicht angeschlossen.</p>
-<div data-chat role="log" aria-live="polite"></div>
-<div><button type="button" data-tool="last_training">Mein letztes Training</button><button type="button" data-tool="next_event">Nächster Jugendtermin</button></div>
-<form><label>Deine Frage<input data-question maxlength="300" autocomplete="off"></label><button>Senden</button></form>
-<div><button type="button" data-mic>Mikrofon</button><button type="button" data-replay>Antwort vorlesen</button><button type="button" data-stop>Stopp</button></div>
-<p>Spracheingabe ist freiwillig und kann über den Browseranbieter verarbeitet werden. Ohne Mikrofon bleibt alles per Text bedienbar.</p>
-<p data-status role="status">Mikrofon aus</p>
-</section>
-</div>
-<script defer src="{{ url_for('portal_adler.static', filename='panel.js') }}"></script>
+<header><div><span class="adler-eyebrow">DEIN VEREINSBEGLEITER</span><strong>KI-Adler</strong></div><div><button type="button" data-large aria-label="Gespräch vergrößern" aria-pressed="false">⛶</button><button type="button" data-close aria-label="KI-Adler schließen">✕</button></div></header>
+<div class="adler-hero"><div class="adler-face" role="img" aria-label="Freundlicher Adler mit grünen Augen und grünem Halstuch"></div><div><h2>Hallo{% if display_name %}, {{ display_name }}{% endif %}!</h2><p>Schön, dass du da bist.<br>Was möchtest du wissen?</p></div></div>
+<p data-status role="status" class="adler-status">Mikrofon aus · bereit für dich</p>
+<div data-chat role="log" aria-live="polite" aria-label="Unser Gespräch"></div>
+<div class="adler-quick"><button type="button" data-tool="last_training">Mein Training</button><button type="button" data-tool="progress">Mein Fortschritt</button><button type="button" data-tool="next_event">Nächster Termin</button><button type="button" data-tool="badges">Meine Abzeichen</button></div>
+<form><label for="adler-question">Deine Nachricht</label><div class="adler-compose"><input id="adler-question" data-question maxlength="300" autocomplete="off" placeholder="Frag mich etwas …"><button aria-label="Nachricht senden">➜</button></div></form>
+<div class="adler-controls"><button type="button" data-mic aria-pressed="false">🎙 Sprechen</button><button type="button" data-replay>Vorlesen</button><button type="button" data-stop>Stopp</button></div>
+<details><summary>Stimme &amp; Datenschutz</summary>
+<label>Deutsche Stimme<select data-voice aria-label="Deutsche Stimme"><option value="">Systemstimme</option></select></label>
+<label><input type="checkbox" data-motion checked> Dezente Animationen</label>
+<label><input type="checkbox" data-speech-consent> Spracheingabe erlauben</label>
+<p>Dein Browser kann Gesprochenes an seinen Sprachdienst senden. Nur nach Antippen, niemals im Hintergrund. Alternativ funktioniert das Diktieren über deine iPhone-Tastatur; dann bei Bedarf „Vorlesen“ antippen.</p>
+{% if dialogue_available %}<label><input type="checkbox" data-external-consent> Freie Gespräche über den freigegebenen KI-Dienst erlauben</label><p>Verarbeitung durch {{ dialogue_processor }}. Dabei wird dein eingegebener Gesprächstext verarbeitet. Bitte keine privaten Angaben nennen. Name, QR-Zugang und Portalergebnisse werden nicht automatisch mitgeschickt. Keine Chat- oder Audiodateien auf unserem Server.</p>{% else %}<p>Freie KI-Gespräche sind noch nicht freigeschaltet. Persönliche Portalfragen bleiben lokal. Begrüßungen sind vorbereitete Antworten.</p>{% endif %}
+<p>Getippte Nachrichten bleiben stumm. Das Gespräch verschwindet beim Schließen und spätestens nach 15 Minuten. Systemstimmen unterscheiden sich je nach Gerät; eine männliche Stimme ist nicht auf jedem Gerät verfügbar.</p>
+<button type="button" data-dismiss>Adler bis zum nächsten Seitenaufruf ausblenden</button>
+</details>
+</section></div>
+<script defer src="{{ url_for('portal_adler.static', filename='panel.js') }}?v=begleiter1"></script>
