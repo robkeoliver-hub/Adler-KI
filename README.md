@@ -106,3 +106,5 @@ Der aktuelle Portalexport wurde privat untersucht. Der optionale, standardmäßi
 Der nächste isolierte Test des bestehenden Portals ist in [Portaltest auf dem Pi](docs/entwicklung/PORTALTEST-AUF-DEM-PI.md) beschrieben. Er verwendet eine neue synthetische Datenbank auf 5071 und ändert keine bestehenden Dienste.
 
 [HTTPS-Testpfad und private Nginx-Vorschau](docs/entwicklung/HTTPS-PORTALTEST-VORSCHAU.md): vorbereitet, noch nicht am laufenden Webserver aktiviert.
+
+[Bestehende Portal-Testkopie für den HTTPS-Pfad aktualisieren](docs/entwicklung/TESTMOUNT-UPDATE.md): mit Sicherung und Rücknahme, ohne Nginx-Aktivierung.
