@@ -80,3 +80,12 @@ update_test_mount.py übernimmt den geprüften Mount in die vorhandene Kopie auf
 integrierte Checks, automatischer Rückweg und offlinefähige Rücknahme vorbereitet.
 171 Tests sowie tatsächlicher Cloud-Update-/Fehler-/Rücknahmeablauf bestanden.
 Siehe TESTMOUNT-UPDATE.md. Pi-Ausführung noch offen; Nginx bleibt unverändert.
+
+## Letzte HTTPS-Prüfung vorbereitet
+
+Betreiber bestätigt Mount-Update und integrierte Tests auf dem Pi. Getrennter
+Root-Checker activate_test_proxy.py --check klont die wirksamen Nginx-Konfigurationen
+privat und prüft den konkreten zusätzlichen Block mit nginx -t. --apply ist separat,
+benötigt vorherige Betreiberfreigabe und enthält Originalbackup/Hashschutz/Rücknahme.
+187 Cloudtests bestanden, Nginx-/Reload-/HTTPS-Teile dort simuliert. Tatsächliche
+Pi-Syntaxprüfung noch offen; HTTPS-AKTIVIERUNG.md. Keine Aktivierung ausgeführt.
