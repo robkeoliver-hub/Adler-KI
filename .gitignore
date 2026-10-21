@@ -1,0 +1,19 @@
+# Private configuration and credentials
+config.ini
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Never commit production/member data
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+uploads/
+# Local runtime
+.venv/
+__pycache__/
+.pytest_cache/
+*.log
