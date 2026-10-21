@@ -1,49 +1,29 @@
 import atexit
-import configparser
 import hashlib
 import secrets
 import threading
 import time
 from collections import OrderedDict, deque
-from pathlib import Path
 from urllib.parse import urlsplit
 from flask import Flask, request, jsonify, render_template, g, abort
 from .providers import MockProvider, CompatibleProvider, ProviderError
 from .data import DemoData, Principal
+from .config import load_settings
 from .sessions import discard_session, expire_sessions, is_current_session, cleanup_delay
 
 PREFIX = '/demo/ki-adler'
 
 
 def create_app(config_path=None, overrides=None):
-    cfg = configparser.ConfigParser(interpolation=None)
-    cfg.read(config_path or Path(__file__).resolve().parent.parent / 'config.ini')
-    section = cfg['adler'] if cfg.has_section('adler') else {}
+    settings = load_settings(config_path, overrides)
     app = Flask(__name__, static_url_path=PREFIX + '/static')
-    app.config.update(MAX_CONTENT_LENGTH=8192, DEMO_CODE=section.get('demo_code', ''),
-        PUBLIC_ORIGIN=section.get('public_origin', 'http://127.0.0.1:5057'),
-        PROVIDER=section.get('provider', 'mock'), ENDPOINT=section.get('endpoint', ''),
-        MODEL=section.get('model', ''), API_KEY=section.get('api_key', ''),
-        EXTERNAL_APPROVED=section.get('external_approved', 'false').lower() == 'true',
-        SESSION_TTL=900, CHAT_LIMIT=10)
-    if overrides: app.config.update(overrides)
-    ttl = app.config['SESSION_TTL']
-    if isinstance(ttl, bool) or not isinstance(ttl, int) or not 1 <= ttl <= 900:
-        raise ValueError('SESSION_TTL muss zwischen 1 und 900 Sekunden liegen')
-    if len(app.config['DEMO_CODE']) < 16: raise ValueError('demo_code: mindestens 16 Zeichen')
+    app.config.update(settings)
     origin = app.config['PUBLIC_ORIGIN']
     parsed = urlsplit(origin)
-    if parsed.scheme not in ('https', 'http') or not parsed.netloc or parsed.path or parsed.query or parsed.fragment:
-        raise ValueError('public_origin muss eine Origin ohne Pfad sein')
-    if parsed.scheme != 'https' and parsed.hostname not in ('127.0.0.1', 'localhost'):
-        raise ValueError('Nicht-lokaler Zugriff erfordert HTTPS')
-    if app.config['PROVIDER'] == 'mock': provider = MockProvider()
-    elif app.config['PROVIDER'] == 'compatible':
-        endpoint = urlsplit(app.config['ENDPOINT'])
-        if not app.config['EXTERNAL_APPROVED'] or endpoint.scheme != 'https' or not endpoint.hostname or endpoint.username or endpoint.password or endpoint.fragment or not app.config['MODEL']:
-            raise ValueError('Provider benötigt explizite Freigabe, HTTPS-Endpunkt und Modell')
+    if app.config['PROVIDER'] == 'mock':
+        provider = MockProvider()
+    else:
         provider = CompatibleProvider(app.config['ENDPOINT'], app.config['MODEL'], app.config['API_KEY'])
-    else: raise ValueError('Unbekannter Provider')
     store, buckets = OrderedDict(), OrderedDict()
     lock, upstream = threading.RLock(), threading.BoundedSemaphore(2)
     repository = DemoData()
@@ -117,7 +97,9 @@ def create_app(config_path=None, overrides=None):
                 if limited('login:' + (request.remote_addr or '?'), 5) or limited('login-global', 60): abort(429)
             else:
                 if g.state is None: abort(401)
-                if request.method == 'POST' and not secrets.compare_digest(request.headers.get('X-CSRF-Token', ''), g.state['csrf']): abort(403)
+                if request.method == 'POST':
+                    csrf = request.headers.get('X-CSRF-Token', '')
+                    if not csrf.isascii() or not secrets.compare_digest(csrf, g.state['csrf']): abort(403)
                 if limited('api:' + g.sid, 40): abort(429)
 
     @app.after_request
@@ -143,7 +125,8 @@ def create_app(config_path=None, overrides=None):
     @app.post(PREFIX + '/api/login')
     def login():
         data = payload(['code'])
-        if not isinstance(data.get('code'), str) or not secrets.compare_digest(data['code'], app.config['DEMO_CODE']): abort(401)
+        code = data.get('code')
+        if not isinstance(code, str) or not code.isascii() or not secrets.compare_digest(code, app.config['DEMO_CODE']): abort(401)
         token, csrf = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
         with lock:
             old = request.cookies.get(cookie, '')
