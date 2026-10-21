@@ -37,7 +37,7 @@ def run():
             page.goto(ORIGIN+prefix+'/jugend/'+TOKEN_A)
             assert page.locator('nav a').get_attribute('href')=='/existing'
             button=page.locator('[data-open]')
-            assert button.evaluate('b=>{const r=b.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===b}')
+            assert button.evaluate('b=>{const r=b.getBoundingClientRect();return b.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}')
             assert button.bounding_box()['y']+button.bounding_box()['height'] < page.locator('nav').bounding_box()['y']
             button.click()
             page.locator('[data-question]').fill('Mein letztes Ergebnis')
@@ -45,6 +45,8 @@ def run():
             page.get_by_text('101 Ringe',exact=False).wait_for()
             assert page.evaluate('window.speaks')==0
             page.locator('[data-replay]').click();assert page.evaluate('window.speaks')==1
+            page.locator('details').evaluate('e=>e.open=true')
+            page.locator('[data-speech-consent]').check()
             page.locator('[data-mic]').click()
             page.evaluate("window.rec.onresult({results:[[{transcript:'Nächster Termin'}]]})")
             page.get_by_text('Synthetic-Youth am',exact=False).wait_for()
@@ -57,6 +59,10 @@ def run():
             assert page.locator('nav a').get_attribute('href')=='/existing'
             page.locator('[data-open]').click();page.keyboard.press('Escape')
             assert page.locator('section').is_hidden()
+            assert page.locator('.adler-hero h2').inner_text()=='Hallo, Test Anna!'
+            if width==375 and not prefix:
+                page.locator('[data-open]').click()
+                page.screenshot(path='/workspace/adler-vereinsbegleiter-mobile.png')
             assert not errors, errors
             context.close()
             try:next(fixture)
