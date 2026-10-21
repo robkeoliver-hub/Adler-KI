@@ -56,7 +56,7 @@ Zusätzlich muss die testende Person den externen **synthetischen** Testdialog i
 
 ## Datenschutz und Grenzen
 
-Sitzungen liegen nur im Prozess-RAM, haben eine feste Lebenszeit von 15 Minuten und werden spätestens 30 Sekunden danach durch einen schlafenden Aufräum-Thread entfernt; bei Requests sofort. Maximal 128 Sitzungen, acht Verlaufseinträge je Sitzung; UI zeigt maximal 20 Nachrichten. Nach Beenden oder Dienstneustart gelöscht. Bei Seitenwechsel wird Logout versucht; bei Netzverlust greift der Ablauf. Keine Browser-Speicher-API oder dauerhafte Gesprächsspeicherung, keine Audiodateien. Betriebssystem-Swap/Core-Dumps und vorgelagerte Logs müssen Betreiber bei realem Einsatz ebenfalls datenschutzgerecht konfigurieren. Browser-/Apple-Dienste haben eigene Regeln.
+Sitzungen liegen nur im Prozess-RAM, haben eine feste Lebenszeit von 15 Minuten und werden durch einen schlafenden Aufräum-Thread an ihrer Ablaufzeit entfernt; bei Requests wird der Ablauf zusätzlich sofort geprüft. Abmeldung und Neuanmeldung leeren auch bereits referenzierte Verläufe; späte KI-Antworten werden vor der Freigabe erneut auf eine gültige Sitzung geprüft. Maximal 128 Sitzungen, acht Verlaufseinträge je Sitzung; UI zeigt maximal 20 Nachrichten. Nach Beenden oder Dienstneustart gelöscht. Bei Seitenwechsel wird Logout versucht; bei Netzverlust greift der Ablauf. Keine Browser-Speicher-API oder dauerhafte Gesprächsspeicherung, keine Audiodateien. Betriebssystem-Swap/Core-Dumps und vorgelagerte Logs müssen Betreiber bei realem Einsatz ebenfalls datenschutzgerecht konfigurieren. Browser-/Apple-Dienste haben eigene Regeln.
 
 Maximal 600 Eingabezeichen, 8 KiB HTTP-Body, zehn Chats/Minute/Sitzung und global 30 Chats/Minute. Login fünf/Minute je direkter IP sowie global 60; hinter lokalem Proxy teilen sich Tester bewusst das IP-Limit. Kein Vertrauen in frei übergebene Forwarded-For-Header. Zwei parallele KI-Aufrufe, vier Waitress-Threads, nur lesende synthetische Werkzeuge. Kein Betreuerzugriff freigeschaltet. Keine echte Datenbank angebunden. Fehlerantworten verraten keine Prompts, Schlüssel oder Provider-Fehlertexte.
 
@@ -75,3 +75,14 @@ Analyse vor Änderungen: [docs/ANALYSE.md](docs/ANALYSE.md), vollständige Route
 ## Vorschau-Bilder im GitHub-Paket
 
 Die beiden Chromium-Screenshots sind verlustfrei als `docs/*.png.base64` enthalten, da die verwendete GitHub-Dateischnittstelle nur Textdateien übernimmt. Optional mit `.venv/bin/python scripts/restore_previews.py` als PNG wiederherstellen. Das ist für den Betrieb der Demo nicht erforderlich; die Anwendung selbst nutzt ausschließlich ihr eigenes SVG/CSS.
+
+## Fortsetzung nach Entwicklungsauftrag vom 21.10.2026
+
+Phase 0 und der erste kleine Phase-1-Schritt sind separat dokumentiert:
+
+- [Aktuelle Bestandsaufnahme mit Live-/Zugriffsgrenzen](docs/entwicklung/BESTAND-2026-10-21.md)
+- [Zielarchitektur und Sicherheitskonzept](docs/entwicklung/ARCHITEKTUR.md)
+- [Priorisierte Tickets und Abhängigkeiten](docs/entwicklung/TICKETS.md)
+- [P1-01: flüchtige Sitzungen, Tests, Setup und Rollback](docs/entwicklung/P1-01-SITZUNGEN.md)
+
+Der Entwicklungsbranch ergänzt den noch offenen PR #1; es gibt keine automatische Integration oder Änderung des laufenden Raspberry Pi. Die aktuelle Portal-Codebasis, tatsächliche DB-/Proxykonfiguration und eine passende Avatarreferenz müssen für weitere Integrationsschritte noch verifiziert werden. Die feste Demo-Anmeldung von maximal 15 Minuten bleibt erhalten und verlängert sich nicht durch Aktivität. Die Demo bleibt synthetisch; Phase 1 ist damit erst begonnen und nicht vollständig abgeschlossen.

@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 from flask import Flask, request, jsonify, render_template, g, abort
 from .providers import MockProvider, CompatibleProvider, ProviderError
 from .data import DemoData, Principal
+from .sessions import discard_session, expire_sessions, is_current_session, cleanup_delay
 
 PREFIX = '/demo/ki-adler'
 
@@ -26,6 +27,9 @@ def create_app(config_path=None, overrides=None):
         EXTERNAL_APPROVED=section.get('external_approved', 'false').lower() == 'true',
         SESSION_TTL=900, CHAT_LIMIT=10)
     if overrides: app.config.update(overrides)
+    ttl = app.config['SESSION_TTL']
+    if isinstance(ttl, bool) or not isinstance(ttl, int) or not 1 <= ttl <= 900:
+        raise ValueError('SESSION_TTL muss zwischen 1 und 900 Sekunden liegen')
     if len(app.config['DEMO_CODE']) < 16: raise ValueError('demo_code: mindestens 16 Zeichen')
     origin = app.config['PUBLIC_ORIGIN']
     parsed = urlsplit(origin)
@@ -44,19 +48,36 @@ def create_app(config_path=None, overrides=None):
     lock, upstream = threading.RLock(), threading.BoundedSemaphore(2)
     repository = DemoData()
     app.extensions['adler'] = {'sessions': store, 'provider': provider, 'repository': repository}
-    # One sleeping daemon per app, no polling of provider or database.
+    # One sleeping worker, woken at the actual expiry or registry changes.
+    wake_cleanup = threading.Condition(lock)
     stop_cleanup = threading.Event()
-    def cleanup():
-        while not stop_cleanup.wait(30):
+
+    def sweep():
+        with lock:
             now = time.monotonic()
-            with lock:
-                for key in list(store):
-                    if store[key]['expires'] <= now: del store[key]
-                for key in list(buckets):
-                    if buckets[key]['seen'] < now - 600: del buckets[key]
+            expire_sessions(store, now)
+            for key in list(buckets):
+                if buckets[key]['seen'] < now - 600:
+                    del buckets[key]
+
+    def cleanup():
+        with wake_cleanup:
+            while not stop_cleanup.is_set():
+                sweep()
+                wake_cleanup.wait(timeout=cleanup_delay(store, time.monotonic()))
+
+    def shutdown():
+        with wake_cleanup:
+            stop_cleanup.set()
+            for sid in list(store):
+                discard_session(store, sid)
+            wake_cleanup.notify_all()
+
+    app.extensions['adler']['sweep'] = sweep
+    app.extensions['adler']['shutdown'] = shutdown
     if not app.config.get('TESTING'):
         threading.Thread(target=cleanup, name='adler-session-expiry', daemon=True).start()
-        atexit.register(stop_cleanup.set)
+        atexit.register(shutdown)
     cookie = '__Secure-adler_demo' if parsed.scheme == 'https' else 'adler_demo'
     secure = parsed.scheme == 'https'
 
@@ -86,11 +107,11 @@ def create_app(config_path=None, overrides=None):
         if request.path.startswith(PREFIX + '/api/'):
             now = time.monotonic()
             with lock:
-                for key in list(store):
-                    if store[key]['expires'] <= now: del store[key]
+                expire_sessions(store, now)
                 token = request.cookies.get(cookie, '')
                 g.sid = hashlib.sha256(token.encode()).hexdigest()
                 g.state = store.get(g.sid)
+                g.principal = g.state['principal'] if g.state is not None else None
             # Login brute-force/global ceiling cannot be bypassed by fresh cookies.
             if request.path.endswith('/login'):
                 if limited('login:' + (request.remote_addr or '?'), 5) or limited('login-global', 60): abort(429)
@@ -126,10 +147,11 @@ def create_app(config_path=None, overrides=None):
         token, csrf = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
         with lock:
             old = request.cookies.get(cookie, '')
-            store.pop(hashlib.sha256(old.encode()).hexdigest(), None)
+            discard_session(store, hashlib.sha256(old.encode()).hexdigest())
             if len(store) >= 128: abort(503)
             store[hashlib.sha256(token.encode()).hexdigest()] = dict(csrf=csrf, expires=time.monotonic()+app.config['SESSION_TTL'],
                 principal=Principal('synthetic-youth','youth'), history=[], busy=False)
+            wake_cleanup.notify_all()
         response = jsonify(csrf=csrf, mode=app.config['PROVIDER'], ttl=app.config['SESSION_TTL'])
         response.set_cookie(cookie, token, secure=secure, httponly=True, samesite='Strict', path=PREFIX+'/', max_age=app.config['SESSION_TTL'])
         return response
@@ -146,7 +168,9 @@ def create_app(config_path=None, overrides=None):
     @app.post(PREFIX + '/api/logout')
     def logout():
         payload([])
-        with lock: store.pop(g.sid, None)
+        with lock:
+            discard_session(store, g.sid)
+            wake_cleanup.notify_all()
         response = jsonify(ok=True)
         response.delete_cookie(cookie, path=PREFIX+'/', secure=secure, httponly=True, samesite='Strict')
         return response
@@ -160,22 +184,28 @@ def create_app(config_path=None, overrides=None):
         message = message.strip()
         if limited('chat:'+g.sid, app.config['CHAT_LIMIT']) or limited('chat-global', 30): abort(429)
         with lock:
+            if not is_current_session(store, g.sid, g.state, g.principal, time.monotonic()): abort(401)
             if g.state['busy']: abort(503)
             g.state['busy'] = True
             history = list(g.state['history'])
         try:
-            try: answer = repository.answer(g.state['principal'], message)
+            try: answer = repository.answer(g.principal, message)
             except PermissionError: abort(403)
             if answer is None:
                 # Browser has no approval for personal content; provider mode only for synthetic tests.
                 if not upstream.acquire(blocking=False): abort(503)
-                try: answer = provider.reply(history + [{'role':'user', 'content':message}])
+                try:
+                    with lock:
+                        if not is_current_session(store, g.sid, g.state, g.principal, time.monotonic()): abort(401)
+                    answer = provider.reply(history + [{'role':'user', 'content':message}])
                 except ProviderError: abort(502)
                 finally: upstream.release()
             with lock:
-                g.state['history'] = (history + [{'role':'user','content':message}, {'role':'assistant','content':answer}])[-8:]
-            return jsonify(reply=answer, mode=app.config['PROVIDER'], synthetic=True, elapsed_ms=round((time.perf_counter()-g.started)*1000,2))
+                if not is_current_session(store, g.sid, g.state, g.principal, time.monotonic()): abort(401)
+                g.state['history'][:] = (history + [{'role':'user','content':message}, {'role':'assistant','content':answer}])[-8:]
+                return jsonify(reply=answer, mode=app.config['PROVIDER'], synthetic=True, elapsed_ms=round((time.perf_counter()-g.started)*1000,2))
         finally:
+            history.clear()
             with lock: g.state['busy'] = False
 
     return app
