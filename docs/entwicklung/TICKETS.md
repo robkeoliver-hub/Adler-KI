@@ -50,3 +50,12 @@ DB-Schema/Restore bleiben offen. P1-03/04/05 haben einen deaktivierten ersten Sc
 125 Tests inkl. 27 Portaltests sowie Chromium-Smoke bestanden. Das schließt weder
 volle Rollen- noch Portal-/Geräteabnahme ab; Details in P1-03-PORTAL-LESEN.md.
 Keine Produktivänderung und kein Auto-Update der bereits aktivierten Pi-Demo.
+
+## Nächster Schritt: Portaltest auf 5071 vorbereitet
+
+Standardbibliothek-Skript prepare_portal_test.py baut den bekannten privaten Export
+mit gepinntem PR-#7-Adapter separat auf. Neue synthetische DB, unveränderte Original-
+seiten, Testbanner, keine Portal-Schreibaktionen. 143 pytest-Tests plus echter Cloud-
+Aufbau mit 23 integrierten Prüfungen und Start/Stopp/Neustart bestanden.
+Siehe PORTALTEST-AUF-DEM-PI.md. Noch keine Pi-Installation; iPhone-Testadresse ist
+bis zur tatsächlichen Proxy-/TLS-Prüfung und konkreten Freigabe offen.
