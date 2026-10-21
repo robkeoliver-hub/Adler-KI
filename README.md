@@ -94,3 +94,7 @@ Zusammenführung: [Mergeplan für PR #1/#2 und Folge-PRs](docs/entwicklung/MERGE
 ## Optionaler Begleiter (isolierte UI-Vorbereitung)
 
 In der Demo lässt sich KI-Adler jetzt ein-/ausblenden. Ausblenden beendet Mikrofon, Vorlesen und laufende Browseranfragen; Einblenden startet keine Aufnahme. Der tatsächliche Einbau in die bestehende Portalnavigation ist noch nicht erfolgt. [Umfang, Tests und offene Integrationsschritte](docs/entwicklung/P1-05-BEGLEITER-VORBEREITUNG.md).
+
+## Installation auf dem bestehenden Raspberry Pi
+
+[Geprüfter Bookworm-Installer, Umschaltung und Rückkehr](docs/INSTALLATION-PI-BOOKWORM.md). Keine automatische Portalintegration; vorhandener Demo-Stand aus PR #4.
