@@ -90,3 +90,7 @@ Phase 0 und der erste kleine Phase-1-Schritt sind separat dokumentiert:
 Der Entwicklungsbranch ergänzt den noch offenen PR #1; es gibt keine automatische Integration oder Änderung des laufenden Raspberry Pi. Die aktuelle Portal-Codebasis, tatsächliche DB-/Proxykonfiguration und eine passende Avatarreferenz müssen für weitere Integrationsschritte noch verifiziert werden. Die feste Demo-Anmeldung von maximal 15 Minuten bleibt erhalten und verlängert sich nicht durch Aktivität. Die Demo bleibt synthetisch; Phase 1 ist damit erst begonnen und nicht vollständig abgeschlossen.
 
 Zusammenführung: [Mergeplan für PR #1/#2 und Folge-PRs](docs/entwicklung/MERGEPLAN.md). Für die echte Integration fehlen [diese konkreten aktuellen Portaldateien](docs/entwicklung/PORTAL-INTEGRATIONSBEDARF.md). Es entsteht keine zweite Mitgliederverwaltung.
+
+## Optionaler Begleiter (isolierte UI-Vorbereitung)
+
+In der Demo lässt sich KI-Adler jetzt ein-/ausblenden. Ausblenden beendet Mikrofon, Vorlesen und laufende Browseranfragen; Einblenden startet keine Aufnahme. Der tatsächliche Einbau in die bestehende Portalnavigation ist noch nicht erfolgt. [Umfang, Tests und offene Integrationsschritte](docs/entwicklung/P1-05-BEGLEITER-VORBEREITUNG.md).
