@@ -1,3 +1,5 @@
+> Neuer persönlicher Vereinsbegleiter: [Umfang, QR-Zugang, Installation und Rückweg](docs/entwicklung/VEREINSBEGLEITER.md), [Prüfbericht und iPhone-Abnahme](docs/entwicklung/VEREINSBEGLEITER-PRUEFBERICHT.md). Baut auf dem bestehenden Portaltest auf. Echte freie KI benötigt weiterhin eine getrennte Anbieterfreigabe; keine automatische Produktivschaltung.
+
 # KI-Adler – isolierte Testversion
 
 Eigenständige Flask-App unter `/demo/ki-adler/`, eigener Port 5057. Kein Import der bestehenden Webseite, keine Mitgliederdatenbank, keine Migration, kein Audio-Upload. Mock funktioniert ohne Schlüssel. Echte dialogfähige KI ist über einen optionalen OpenAI-kompatiblen HTTPS-Provider anschließbar; Mock selbst ist ausdrücklich kein Sprachmodell.
