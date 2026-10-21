@@ -141,22 +141,38 @@ def write_private(path,data):
         if os.path.exists(tmp):os.unlink(tmp)
 
 
+def read_snapshot(selected, original):
+    # nginx -T already read this site with the operator's sudo rights. Preview
+    # needs no extra file permissions; a dump snapshot is never a restore backup.
+    try:
+        disk = selected.read_text()
+    except PermissionError:
+        return original, False
+    if disk.rstrip('\r\n') != original.rstrip('\r\n'):
+        raise PreviewError('Datei seit nginx -T verändert oder nicht eindeutig')
+    return disk, True
+
+
 def main():
     os.umask(0o077)
+    phase='Nginx-Ausgabe lesen'
     try:
         text=sys.stdin.read(2*1024*1024+1)
         if len(text)>2*1024*1024:raise PreviewError('Konfiguration zu groß')
+        phase='HTTPS-Server bestimmen'
         path,original,candidate=make_candidate(split_dump(text))
+        phase='Zielpfad prüfen'
         selected=Path(path)
         if not selected.resolve().is_relative_to(Path('/etc/nginx')):
             raise PreviewError('Zieldatei liegt außerhalb /etc/nginx')
         # nginx -T inserts blank separators. Compare exact current bytes after
         # trimming only trailing newlines; never overwrite the live file.
-        disk=selected.read_text()
-        if disk.rstrip('\r\n')!=original.rstrip('\r\n'):
-            raise PreviewError('Datei seit nginx -T verändert oder nicht eindeutig')
-        # Rebuild against exact disk bytes for future checked apply/restore.
+        phase='Site-Snapshot prüfen'
+        disk,verified=read_snapshot(selected,original)
+        # Build preview from verified disk bytes or the privileged nginx -T snapshot.
+        # Applying later always requires a fresh privileged backup/hash check.
         _,_,candidate=make_candidate({path:disk})
+        phase='Privaten Testordner prüfen'
         root=Path.home()/'ki-adler-portaltest'
         if root.is_symlink() or (root/'private').is_symlink() or not (root/'private/state.json').is_file():
             raise PreviewError('Vorbereiteter Portaltest fehlt')
@@ -164,20 +180,27 @@ def main():
         if out.is_symlink():raise PreviewError('Unsicherer Vorschauordner')
         out.mkdir(mode=0o700,exist_ok=True)
         if out.stat().st_mode&0o077:raise PreviewError('Vorschauordner nicht privat')
+        phase='Private Vorschau speichern'
         write_private(out/'candidate.conf',candidate)
-        write_private(out/'original.conf',disk)
-        report={'target':str(selected.resolve()),'original_sha256':hashlib.sha256(disk.encode()).hexdigest(),
+        write_private(out/'snapshot.conf',disk)
+        report={'target':str(selected.resolve()),'snapshot_sha256':hashlib.sha256(disk.encode()).hexdigest(),
+                'snapshot_disk_verified':verified,'restorable_backup':False,
                 'candidate_sha256':hashlib.sha256(candidate.encode()).hexdigest(),
                 'host':HOST,'prefix':PREFIX,'test_port':5071,'applied':False,
                 'requires_mounted_test_and_nginx_validation':True}
         write_private(out/'report.json',json.dumps(report,indent=2))
         print('VORSCHAU BEREIT: genau ein HTTPS-Server bestätigt.')
+        if not verified:print('Site nur über nginx -T lesbar: Snapshot gespeichert, kein Wiederherstellungsbackup.')
         print('Bestehendes Portal 5000 und KI-Demo 5057 bleiben unverändert.')
         print('Vorgesehener neuer Pfad: https://'+HOST+PREFIX)
         print('Vorschau nur privat gespeichert. Noch NICHT aktiviert; kein Nginx-Reload.')
         print('Vor Freigabe: isolierten Test auf Präfix/Cookie-Namen umstellen und nginx -t prüfen.')
     except (PreviewError,OSError,ValueError) as error:
-        message=str(error) if isinstance(error,PreviewError) else 'Lokale Vorschau konnte nicht sicher erstellt werden'
+        if isinstance(error,PreviewError):message=str(error)
+        elif isinstance(error,OSError):
+            reason={1:'Zugriff verweigert',2:'Datei fehlt',13:'Zugriff verweigert',28:'Speicher voll',30:'Dateisystem schreibgeschützt'}.get(error.errno,'Dateizugriff fehlgeschlagen')
+            message='Vorschau angehalten: '+phase+' – '+reason
+        else:message='Vorschau angehalten: '+phase+' – Datenformat nicht unterstützt'
         print(message,file=sys.stderr);raise SystemExit(1)
 
 
