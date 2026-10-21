@@ -89,3 +89,12 @@ privat und prüft den konkreten zusätzlichen Block mit nginx -t. --apply ist se
 benötigt vorherige Betreiberfreigabe und enthält Originalbackup/Hashschutz/Rücknahme.
 187 Cloudtests bestanden, Nginx-/Reload-/HTTPS-Teile dort simuliert. Tatsächliche
 Pi-Syntaxprüfung noch offen; HTTPS-AKTIVIERUNG.md. Keine Aktivierung ausgeführt.
+
+## Sichtbarer Launcher nach HTTPS-Aktivierung
+
+Betreiber bestätigt HTTPS-Aktivierung, meldet dann fehlenden Adler. Live-HTML und
+Assets vorhanden; tatsächliche feste Navigation verdeckt den Launcher. CSS-Abstand
+korrigiert, Regressionstest mit überlagernder fester Hostnavigation und Hit-Testing
+ergänzt. 191 Tests bestanden plus Browservergleich mit echten Seitenantworten.
+Reparaturskript ohne Neustart/Nginx-Änderung: ADLER-SCHALTFLAECHE.md. Pi-Anwendung
+und echte Safari-Abnahme dieser Korrektur noch offen.
