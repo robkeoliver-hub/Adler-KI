@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="{{ url_for('portal_adler.static', filename='panel.css') }}">
+<div id="portal-adler" data-api="{{ url_for('portal_adler.bind') }}" data-csrf="{{ csrf }}">
+<button type="button" data-open aria-expanded="false" aria-controls="portal-adler-dialog">🦅 KI-Adler</button>
+<section id="portal-adler-dialog" aria-label="KI-Adler" hidden>
+<header><strong>KI-Adler</strong><button type="button" data-close aria-label="KI-Adler schließen">Schließen</button></header>
+<p>Ich kann dein letztes Training und den nächsten Jugendtermin nachsehen. Freie KI-Gespräche sind noch nicht angeschlossen.</p>
+<div data-chat role="log" aria-live="polite"></div>
+<div><button type="button" data-tool="last_training">Mein letztes Training</button><button type="button" data-tool="next_event">Nächster Jugendtermin</button></div>
+<form><label>Deine Frage<input data-question maxlength="300" autocomplete="off"></label><button>Senden</button></form>
+<div><button type="button" data-mic>Mikrofon</button><button type="button" data-replay>Antwort vorlesen</button><button type="button" data-stop>Stopp</button></div>
+<p>Spracheingabe ist freiwillig und kann über den Browseranbieter verarbeitet werden. Ohne Mikrofon bleibt alles per Text bedienbar.</p>
+<p data-status role="status">Mikrofon aus</p>
+</section>
+</div>
+<script defer src="{{ url_for('portal_adler.static', filename='panel.js') }}"></script>
