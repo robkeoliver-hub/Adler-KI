@@ -68,3 +68,7 @@ Portaltemplates geprüft. 156 pytest-Tests und Browserprüfungen bestanden.
 preview_test_proxy.py erzeugt ausschließlich eine private Nginx-Vorschau ohne Reload.
 Aktive Testkopie bleibt unverändert; kontrolliertes Mount-Update und konkrete
 Proxyfreigabe sind als Nächstes nötig. Details HTTPS-PORTALTEST-VORSCHAU.md.
+
+Vorschaukorrektur nach Pi-Abbruch: sichere Schritt-/Fehlerdiagnose und explizit
+nicht wiederherstellbarer nginx-T-Snapshot bei root-only Site. Kein sudo-Python,
+keine Rechteänderung. 161 Tests bestanden; tatsächliche Pi-Ursache noch offen.
