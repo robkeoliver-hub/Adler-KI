@@ -49,7 +49,7 @@ def host():
     @app.get('/jugend/<token>', endpoint='jugend_start')
     def page(token):
         Youth.query.filter_by(qr_token=token, aktiv=True).first_or_404()
-        return render_template_string('<nav><a href="/existing">Ergebnisse</a></nav><form action="/existing" method="post"><button>Speichern</button></form>{{ ki_adler_panel() }}')
+        return render_template_string('<style>nav{position:fixed;z-index:1000;bottom:0;left:0;right:0;height:84px;background:#123}</style><nav><a href="/existing">Ergebnisse</a></nav><form action="/existing" method="post"><button>Speichern</button></form>{{ ki_adler_panel() }}')
 
     @app.get('/public')
     def public():
